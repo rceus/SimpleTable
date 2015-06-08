@@ -8,6 +8,7 @@
 
 #import "LoadImageAsync.h"
 #import "ViewController.h"
+#import "AFNetworking.h"
 
 @implementation LoadImageAsync{
     int index;
@@ -38,6 +39,59 @@
 
 
 #pragma mark - LoadImageAsyncFromURL Method
+- (void)loadImageAsyncFromURL:(NSURL *)url atIndex:(int)i {
+    index = i;
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    AFHTTPRequestOperation *operation = [manager GET:[url absoluteString]
+                                          parameters:nil
+                                             success:^(AFHTTPRequestOperation *operation, NSData *responseData)
+                                         {
+                                             NSLog(@"Success");
+                                             UIImage *image = [UIImage imageWithData: responseData];
+                                             if (image) {
+                                                 self.image = image;
+                                             }
+                                             
+                                             [_delegate imageFinishedDownloading:index image:self.image];
+
+                                         }
+                                             failure:^(AFHTTPRequestOperation *operation, NSError *error)
+                                         {
+                                             NSLog(@"Downloading error: %@", error);
+                                         }];
+    
+    /*
+     AFNetworking: NSURLSession
+     
+    NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:configuration];
+    NSURL *URL = url;
+    NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+    NSURLSessionDownloadTask *downloadTask = [manager downloadTaskWithRequest:request progress:nil destination:^NSURL *(NSURL *targetPath, NSURLResponse *response) {
+        NSURL *documentsDirectoryURL = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+        return [documentsDirectoryURL URLByAppendingPathComponent:[response suggestedFilename]];
+    } completionHandler:^(NSURLResponse *response, NSURL *filePath, NSError *error) {
+        NSLog(@"File downloaded to: %@", filePath);
+        NSString *path = [filePath path];
+        NSData *data = [[NSFileManager defaultManager] contentsAtPath:path];
+
+        UIImage *image = [UIImage imageWithData: data];
+        if (image) {
+            self.image = image;
+        }
+        
+        [_delegate imageFinishedDownloading:index image:self.image];
+    
+    }];
+    [downloadTask resume];
+     */
+
+}
+/*
 - (void)loadImageAsyncFromURL:(NSURL *)url atIndex:(int)i {
     
     index = i;
@@ -78,5 +132,6 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error{
     NSLog(@"Connection Failed: %@", [error description]);
 }
+ */
 
 @end

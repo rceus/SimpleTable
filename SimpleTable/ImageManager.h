@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ImageManagerDelegate <NSObject>
+- (void)tableViewReload;
+@end
+
 @interface ImageManager : UIImageView{
 }
 
+@property (assign, nonatomic) id <ImageManagerDelegate> delegate;
+- (id)initWithDelegate:(id <ImageManagerDelegate>) delegatedItem;
+
 - (UIImage *) returnImageAtIndex:(int) index;
-
-
+- (void) initializeImages;
++ (id) sharedManager;
 @end

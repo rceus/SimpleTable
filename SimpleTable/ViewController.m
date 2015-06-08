@@ -9,16 +9,15 @@
 #import "ViewController.h"
 #import "SimpleTableCellTableViewCell.h"
 #import "LoadImageAsync.h"
+#import "ImageManager.h"
 
 @interface ViewController (){
     NSArray *recipes;
     NSArray *thumbnails;
     NSArray *prepTime;
     NSArray *thumbnailUrl;
-    NSMutableArray
-    *myImageView;
     
-    
+    ImageManager* manager;
 }
 @end
 
@@ -33,7 +32,7 @@
     thumbnails = [dict objectForKey:@"Thumbnail"];
     prepTime = [dict objectForKey:@"PrepTime"];
     thumbnailUrl = [dict objectForKey:@"ThumnailUrl"];
-    myImageView = [[NSMutableArray alloc] init];
+    /*myImageView = [[NSMutableArray alloc] init];
     
     for (int i = 0; i < thumbnailUrl.count; i++) {
         NSURL *url = [NSURL URLWithString:(NSString *)[thumbnailUrl objectAtIndex:i]];
@@ -41,20 +40,19 @@
         NSLog(@"URL: %@, INDEX: %d!", url, i);
         NSLog(@"%@", myImageView[i]);
         [myImageView[i] loadImageAsyncFromURL:url atIndex:i];
-    }
-}
-
-- (void)imageFinishedDownloading:(int)atIndex image:(UIImage *)loadedImage{
-    //Do Something Here
-    //Call reload method
-    ((LoadImageAsync *)myImageView[atIndex]).image = loadedImage;
-    [self.tableView reloadData];
-    NSLog(@"Image Finished Downloading");
+    }*/
+    //manager = [[ImageManager alloc]initWithDelegate:self];
+    manager = [ImageManager sharedManager];
+    [manager initializeImages];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)tableViewReload{
+    [self.tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -83,9 +81,8 @@
     
     cell.nameLabel.text = [recipes objectAtIndex:indexPath.row];
     cell.prepTimeLabel.text = [prepTime objectAtIndex:indexPath.row];
-    UIImage *updatedImage = ((LoadImageAsync *)[myImageView objectAtIndex:indexPath.row]).image;
+    UIImage *updatedImage = [manager returnImageAtIndex:(int)indexPath.row];
     
-    //NSLog(@"%d", indexPath.row);
     if ( updatedImage == nil) {
         cell.thumbnailImageView.image = [UIImage imageNamed:@"placeHolder.png"];
     } else {
