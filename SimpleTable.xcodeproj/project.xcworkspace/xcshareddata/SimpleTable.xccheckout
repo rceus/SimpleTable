@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>2C2B8465-CBB1-456B-8E20-053EDE438D63</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>SimpleTable</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>2174B37967CADDA87B1ECC8C94DDBAC84E556CAE</key>
 		<string>https://github.com/rishabhjain2795/SimpleTable.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>SimpleTable.xcodeproj/project.xcworkspace</string>
+	<string>SimpleTable.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>2174B37967CADDA87B1ECC8C94DDBAC84E556CAE</key>
