@@ -16,13 +16,16 @@
     NSMutableArray *images;
 }
 
-+ (id)sharedManager {
-    static ImageManager *sharedMyManager = nil;
-    @synchronized(self) {
-        if (sharedMyManager == nil)
-            sharedMyManager = [[self alloc] init];
-    }
-    return sharedMyManager;
++ (instancetype)sharedManager {
+    static dispatch_once_t once;
+    static id sharedInstance;
+    
+    dispatch_once(&once, ^
+                  {
+                      sharedInstance = [self new];
+                  });
+    
+    return sharedInstance;
 }
 
 
